@@ -1,0 +1,15 @@
+# Binaries
+**/bin/
+bin-int/
+
+# production files
+GameOfLife/assets/fonts/
+GameOfLife/assets/textures/**.psd
+
+# Visual Studio files and folder
+*.log
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
