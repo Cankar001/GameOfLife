@@ -9,7 +9,7 @@ If you would like to use another font, just change the font name in the code to 
 
 # Setup
 
-To be able to run the game you have to change all Paths to your own path, all paths are directing to the assets directory.
+To be able to run the game you have to change all paths to your own path, all paths are directing to the assets directory.
 After fixing all paths (located in Main.cpp and Text.h) you can build and run the project.
 
 Have fun :)
