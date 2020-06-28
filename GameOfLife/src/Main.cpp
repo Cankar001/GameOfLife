@@ -20,12 +20,13 @@ bool bitmap[NX][NY];
 bool running = true;
 bool gameRunning = true;
 bool renderOverlay = true;
+bool shouldReset = false;
 uint32_t gen = 1;
 uint32_t waitingTime = 200;
 
 TextData gameStateGenText = { "Current generation: 0", 20 };
-TextData gameStatePausedText = { "Game is currently: playing.", 20 };
-TextData gameStateRefreshText = { "Game Refresh Rate: 200ms.", 20 };
+TextData gameStatePausedText = { "Game is currently: playing", 20 };
+TextData gameStateRefreshText = { "Game Refresh Rate: 200ms", 20 };
 
 void CBlock(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint32_t color)
 	{
@@ -116,12 +117,12 @@ void poll_events()
 							if (gameRunning)
 								{
 								gameRunning = false;
-								gameStatePausedText.Text = "Game is currently: paused.";
+								gameStatePausedText.Text = "Game is currently: paused";
 								}
 							else
 								{
 								gameRunning = true;
-								gameStatePausedText.Text = "Game is currently: playing.";
+								gameStatePausedText.Text = "Game is currently: playing";
 								}
 							break;
 
@@ -130,7 +131,7 @@ void poll_events()
 								{
 								waitingTime -= 100;
 								std::stringstream ss;
-								ss << "Game Refresh Rate:" << waitingTime << "ms.";
+								ss << "Game Refresh Rate:" << waitingTime << "ms";
 								gameStateRefreshText.Text = ss.str();
 								}
 							break;
@@ -140,13 +141,17 @@ void poll_events()
 								{
 								waitingTime += 100;
 								std::stringstream ss;
-								ss << "Game Refresh Rate:" << waitingTime << "ms.";
+								ss << "Game Refresh Rate:" << waitingTime << "ms";
 								gameStateRefreshText.Text = ss.str();
 								}
 							break;
 
 						case SDL_SCANCODE_O:
 							renderOverlay = renderOverlay ? false : true;
+							break;
+
+						case SDL_SCANCODE_R:
+							shouldReset = true;
 							break;
 						}
 					break;
@@ -236,20 +241,21 @@ int main(int argc, char *argv[])
 	
 	SDL_Surface *windowIcon = IMG_Load("K:/Programme/GameOfLife/GameOfLife/assets/textures/icon.png");
 	SDL_SetWindowIcon(window, windowIcon);
+	
+	init();
 
-	SDL_Rect bgControls = { 20, 20, 350, 300 };
+	SDL_Rect bgControls = { 20, 20, 350, 350 };
 	SDL_Rect bgStats = { (1280 - 350) - 20, 20, 350, 150 };
 	TextData titelData = { "Controls:", 30 };
 	TextData statsData = { "Game States:", 30 };
-	TextData spaceDescData = { "Play/Pause game.", 20 };
-	TextData fastGameSpeedData = { "Increase game speed.", 20 };
-	TextData slowGameSpeedData = { "Decrease game speed.", 20 };
-	TextData editCellData = { "Enable/Disable Cell manually.", 20 };
-	TextData quitGameData = { "Quit game.", 20 };
-	TextData toggleOverlayData = { "Toggle Overlay.", 20 };
+	TextData spaceDescData = { "Play/Pause game", 20 };
+	TextData fastGameSpeedData = { "Increase game speed", 20 };
+	TextData slowGameSpeedData = { "Decrease game speed", 20 };
+	TextData editCellData = { "Enable/Disable Cell manually", 20 };
+	TextData toggleOverlayData = { "Toggle Overlay", 20 };
+	TextData resetGameData = { "Reset game", 20 };
+	TextData quitGameData = { "Quit game", 20 };
 
-	// Init gameOfLife
-	init();
 
 	// Create static text
 	int titelWidth, titelHeight;
@@ -276,6 +282,9 @@ int main(int argc, char *argv[])
 	int toggleOverlayWidth, toggleOverlayHeight;
 	SDL_Texture *toggleOverlay = create_text(renderer, toggleOverlayData, &toggleOverlayWidth, &toggleOverlayHeight);
 
+	int resetGameWidth, resetGameHeight;
+	SDL_Texture *resetGame = create_text(renderer, resetGameData, &resetGameWidth, &resetGameHeight);
+
 	// Create Textures
 	SDL_Texture *arrowUpKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-up.png");
 	SDL_Texture *arrowDownKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-down.png");
@@ -283,6 +292,7 @@ int main(int argc, char *argv[])
 	SDL_Texture *escapeKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/escape.png");
 	SDL_Texture *mouseTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/mouse.png");
 	SDL_Texture *oTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/o.png");
+	SDL_Texture *rTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/r.png");
 
 	// Main Game loop
 	while (running)
@@ -290,6 +300,12 @@ int main(int argc, char *argv[])
 		// Clear Screen
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(renderer);
+
+		if (shouldReset)
+			{
+			shouldReset = false;
+			init();
+			}
 
 		if (gameRunning)
 			{
@@ -323,7 +339,8 @@ int main(int argc, char *argv[])
 			draw_text(renderer, slowGameSpeed, 90, 160, slowGameSpeedWidth, slowGameSpeedHeight);
 			draw_text(renderer, editCell, 90, 200, editCellWidth, editCellHeight);
 			draw_text(renderer, toggleOverlay, 90, 240, toggleOverlayWidth, toggleOverlayHeight);
-			draw_text(renderer, quitGame, 90, 280, quitGameWidth, quitGameHeight);
+			draw_text(renderer, resetGame, 90, 280, resetGameWidth, resetGameHeight);
+			draw_text(renderer, quitGame, 90, 320, quitGameWidth, quitGameHeight);
 
 			draw_text(renderer, stats, 1280 - 350, 30, statsTitelWidth, statsTitelHeight);
 			render_text(renderer, gameStateGenText, 1280 - 350, 70);
@@ -336,7 +353,8 @@ int main(int argc, char *argv[])
 			draw_texture(renderer, arrowDownKeyTexture, 35, 155, 32, 32);
 			draw_texture(renderer, mouseTexture, 35, 195, 32, 32);
 			draw_texture(renderer, oTexture, 35, 235, 32, 32);
-			draw_texture(renderer, escapeKeyTexture, 35, 275, 32, 32);
+			draw_texture(renderer, rTexture, 35, 275, 32, 32);
+			draw_texture(renderer, escapeKeyTexture, 35, 315, 32, 32);
 			}
 
 		// calculate events and swap window buffer
@@ -347,6 +365,7 @@ int main(int argc, char *argv[])
 		}
 
 	// delete textures
+	SDL_DestroyTexture(rTexture);
 	SDL_DestroyTexture(oTexture);
 	SDL_DestroyTexture(mouseTexture);
 	SDL_DestroyTexture(escapeKeyTexture);
@@ -355,6 +374,8 @@ int main(int argc, char *argv[])
 	SDL_DestroyTexture(arrowUpKeyTexture);
 
 	// delete text
+	SDL_DestroyTexture(resetGame);
+	SDL_DestroyTexture(toggleOverlay);
 	SDL_DestroyTexture(quitGame);
 	SDL_DestroyTexture(editCell);
 	SDL_DestroyTexture(slowGameSpeed);
