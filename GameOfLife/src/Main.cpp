@@ -6,17 +6,20 @@
 #include "Texture.h"
 #include "Text.h"
 
+#define XSIZE 1280
+#define YSIZE 720
 #define ZELLENWIDTH 10
 #define ZELLENHEIGHT 10
 #define ZELLENABSTAND 2
-#define NX (1280 / ZELLENWIDTH)
-#define NY (720 / ZELLENHEIGHT)
+#define NX (XSIZE / ZELLENWIDTH)
+#define NY (YSIZE / ZELLENHEIGHT)
 
 SDL_Window *window;
 SDL_Renderer *renderer;
 bool bitmap[NX][NY];
 bool running = true;
 bool gameRunning = true;
+bool renderOverlay = true;
 uint32_t gen = 1;
 uint32_t waitingTime = 200;
 
@@ -141,6 +144,10 @@ void poll_events()
 								gameStateRefreshText.Text = ss.str();
 								}
 							break;
+
+						case SDL_SCANCODE_O:
+							renderOverlay = renderOverlay ? false : true;
+							break;
 						}
 					break;
 				}
@@ -169,6 +176,8 @@ int16_t get_neighbours(uint16_t x, uint16_t y)
 void calc_next_gen()
 	{
 	bool nextGen[NX][NY];
+	memset(nextGen, 0, NX * NY);
+
 	for (uint16_t y = 0; y < NY; y++)
 		{
 		for (uint16_t x = 0; x < NX; x++)
@@ -221,14 +230,14 @@ int main(int argc, char *argv[])
 	IMG_Init(IMG_INIT_PNG);
 
 	// Window Setup
-	window = SDL_CreateWindow("Game Of Life - by Can Karka", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Game Of Life - by Can Karka", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, XSIZE, YSIZE, SDL_WINDOW_OPENGL);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	
 	SDL_Surface *windowIcon = IMG_Load("K:/Programme/GameOfLife/GameOfLife/assets/textures/icon.png");
 	SDL_SetWindowIcon(window, windowIcon);
 
-	SDL_Rect bgControls = { 20, 20, 350, 260 };
+	SDL_Rect bgControls = { 20, 20, 350, 300 };
 	SDL_Rect bgStats = { (1280 - 350) - 20, 20, 350, 150 };
 	TextData titelData = { "Controls:", 30 };
 	TextData statsData = { "Game States:", 30 };
@@ -237,6 +246,7 @@ int main(int argc, char *argv[])
 	TextData slowGameSpeedData = { "Decrease game speed.", 20 };
 	TextData editCellData = { "Enable/Disable Cell manually.", 20 };
 	TextData quitGameData = { "Quit game.", 20 };
+	TextData toggleOverlayData = { "Toggle Overlay.", 20 };
 
 	// Init gameOfLife
 	init();
@@ -263,12 +273,16 @@ int main(int argc, char *argv[])
 	int quitGameWidth, quitGameHeight;
 	SDL_Texture *quitGame = create_text(renderer, quitGameData, &quitGameWidth, &quitGameHeight);
 
+	int toggleOverlayWidth, toggleOverlayHeight;
+	SDL_Texture *toggleOverlay = create_text(renderer, toggleOverlayData, &toggleOverlayWidth, &toggleOverlayHeight);
+
 	// Create Textures
 	SDL_Texture *arrowUpKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-up.png");
 	SDL_Texture *arrowDownKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-down.png");
 	SDL_Texture *spaceKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/space.png");
 	SDL_Texture *escapeKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/escape.png");
 	SDL_Texture *mouseTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/mouse.png");
+	SDL_Texture *oTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/o.png");
 
 	// Main Game loop
 	while (running)
@@ -292,33 +306,38 @@ int main(int argc, char *argv[])
 		// Draw bitmap
 		draw_field_map();
 
-		// Draw background for text
-		SDL_SetRenderDrawColor(renderer, 0xF0, 0xF0, 0xF0, 0xF0);
-		SDL_RenderFillRect(renderer, &bgControls);
-		SDL_RenderFillRect(renderer, &bgStats);
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &bgControls);
-		SDL_RenderDrawRect(renderer, &bgStats);
+		if (renderOverlay)
+			{
+			// Draw background for text
+			SDL_SetRenderDrawColor(renderer, 0xF0, 0xF0, 0xF0, 0xF0);
+			SDL_RenderFillRect(renderer, &bgControls);
+			SDL_RenderFillRect(renderer, &bgStats);
+			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+			SDL_RenderDrawRect(renderer, &bgControls);
+			SDL_RenderDrawRect(renderer, &bgStats);
 
-		// Draw text
-		draw_text(renderer, titel, 30, 30, titelWidth, titelHeight);
-		draw_text(renderer, spaceDesc, 90, 80, spaceDescWidth, spaceDescHeight);
-		draw_text(renderer, fastGameSpeed, 90, 120, fastGameSpeedWidth, fastGameSpeedHeight);
-		draw_text(renderer, slowGameSpeed, 90, 160, slowGameSpeedWidth, slowGameSpeedHeight);
-		draw_text(renderer, editCell, 90, 200, editCellWidth, editCellHeight);
-		draw_text(renderer, quitGame, 90, 240, quitGameWidth, quitGameHeight);
+			// Draw text
+			draw_text(renderer, titel, 30, 30, titelWidth, titelHeight);
+			draw_text(renderer, spaceDesc, 90, 80, spaceDescWidth, spaceDescHeight);
+			draw_text(renderer, fastGameSpeed, 90, 120, fastGameSpeedWidth, fastGameSpeedHeight);
+			draw_text(renderer, slowGameSpeed, 90, 160, slowGameSpeedWidth, slowGameSpeedHeight);
+			draw_text(renderer, editCell, 90, 200, editCellWidth, editCellHeight);
+			draw_text(renderer, toggleOverlay, 90, 240, toggleOverlayWidth, toggleOverlayHeight);
+			draw_text(renderer, quitGame, 90, 280, quitGameWidth, quitGameHeight);
 
-		draw_text(renderer, stats, 1280 - 350, 30, statsTitelWidth, statsTitelHeight);
-		render_text(renderer, gameStateGenText, 1280 - 350, 70);
-		render_text(renderer, gameStatePausedText, 1280 - 350, 100);
-		render_text(renderer, gameStateRefreshText, 1280 - 350, 130);
+			draw_text(renderer, stats, 1280 - 350, 30, statsTitelWidth, statsTitelHeight);
+			render_text(renderer, gameStateGenText, 1280 - 350, 70);
+			render_text(renderer, gameStatePausedText, 1280 - 350, 100);
+			render_text(renderer, gameStateRefreshText, 1280 - 350, 130);
 
-		// draw textures
-		draw_texture(renderer, spaceKeyTexture, 20, 60, 64, 64);
-		draw_texture(renderer, arrowUpKeyTexture, 35, 115, 32, 32);
-		draw_texture(renderer, arrowDownKeyTexture, 35, 155, 32, 32);
-		draw_texture(renderer, mouseTexture, 35, 195, 32, 32);
-		draw_texture(renderer, escapeKeyTexture, 35, 235, 32, 32);
+			// draw textures
+			draw_texture(renderer, spaceKeyTexture, 20, 60, 64, 64);
+			draw_texture(renderer, arrowUpKeyTexture, 35, 115, 32, 32);
+			draw_texture(renderer, arrowDownKeyTexture, 35, 155, 32, 32);
+			draw_texture(renderer, mouseTexture, 35, 195, 32, 32);
+			draw_texture(renderer, oTexture, 35, 235, 32, 32);
+			draw_texture(renderer, escapeKeyTexture, 35, 275, 32, 32);
+			}
 
 		// calculate events and swap window buffer
 		SDL_RenderPresent(renderer);
@@ -328,6 +347,7 @@ int main(int argc, char *argv[])
 		}
 
 	// delete textures
+	SDL_DestroyTexture(oTexture);
 	SDL_DestroyTexture(mouseTexture);
 	SDL_DestroyTexture(escapeKeyTexture);
 	SDL_DestroyTexture(spaceKeyTexture);
