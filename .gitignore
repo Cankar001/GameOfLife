@@ -6,11 +6,16 @@ bin-int/
 GameOfLife/assets/fonts/
 GameOfLife/assets/textures/**.psd
 
+# setup files
+**.zip
+Setup/Debug/
+Setup/Release/
+
 # Visual Studio files and folder
 *.log
 .vs/
-**.zip
 **.sln
+**.vdproj
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
