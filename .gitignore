@@ -9,6 +9,7 @@ GameOfLife/assets/textures/**.psd
 # Visual Studio files and folder
 *.log
 .vs/
+**.zip
 **.sln
 **.vcxproj
 **.vcxproj.filters
