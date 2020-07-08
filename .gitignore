@@ -8,8 +8,13 @@ GameOfLife/assets/textures/**.psd
 
 # setup files
 **.zip
+**.msi
+**.png
+**.txt
 Setup/Debug/
 Setup/Release/
+Setup-x64/Debug/
+Setup-x64/Release/
 
 # Visual Studio files and folder
 *.log
