@@ -8,11 +8,12 @@ includedir["SDL2TTF"]     = "vendor/SDL2_TTF/include"
 workspace "GameOfLife"
 	configurations
 		{
-		"Debug",
-		"Release"
+		"Release",
+		"Debug"
 		}
 	
 	architecture "x86_64"
+	startproject "GameOfLife"
 		
 	group "Dependencies"
 	include "vendor/SDL2"
