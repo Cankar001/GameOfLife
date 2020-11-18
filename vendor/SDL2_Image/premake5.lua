@@ -4,8 +4,8 @@ project "SDL2_image"
 	cppdialect "C++17"
 	staticruntime "on"
 	
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir)
+	objdir ("bin-int/" .. outputdir)
 	
 	files
 		{
@@ -32,8 +32,8 @@ project "SDL2_image"
 			
 			postbuildcommands
 				{
-				'{COPY} "lib/x64/SDL2_image.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/libpng16-16.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2_image.dll" "%{wks.location}/bin/Debug-x86_64-windows/"',
+				'{COPY} "lib/x64/libpng16-16.dll" "%{wks.location}/bin/Debug-x86_64-windows/"'
 				}
 
 		filter "configurations:Release"
@@ -42,7 +42,7 @@ project "SDL2_image"
 			
 			postbuildcommands
 				{
-				'{COPY} "lib/x64/SDL2_image.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/libpng16-16.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2_image.dll" "%{wks.location}/bin/Release-x86_64-windows/"',
+				'{COPY} "lib/x64/libpng16-16.dll" "%{wks.location}/bin/Release-x86_64-windows/"'
 				}
 

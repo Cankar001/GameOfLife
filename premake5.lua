@@ -30,8 +30,8 @@ workspace "GameOfLife"
 		entrypoint "mainCRTStartup"
 		defines "_CRT_SECURE_NO_WARNINGS"
 		
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+		targetdir ("bin/" .. outputdir)
+		objdir ("bin-int/" .. outputdir)
 		
 		files
 			{

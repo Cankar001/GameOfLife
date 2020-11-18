@@ -4,8 +4,8 @@ project "SDL2_ttf"
 	cppdialect "C++17"
 	staticruntime "on"
 	
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir)
+	objdir ("bin-int/" .. outputdir)
 	
 	files
 		{
@@ -32,9 +32,9 @@ project "SDL2_ttf"
 
 			postbuildcommands
 				{
-				'{COPY} "lib/x64/SDL2_ttf.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/libfreetype-6.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/zlib1.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2_ttf.dll" "%{wks.location}/bin/Debug-x86_64-windows/"',
+				'{COPY} "lib/x64/libfreetype-6.dll" "%{wks.location}/bin/Debug-x86_64-windows/"',
+				'{COPY} "lib/x64/zlib1.dll" "%{wks.location}/bin/Debug-x86_64-windows/"'
 				}
 
 		filter "configurations:Release"
@@ -43,7 +43,7 @@ project "SDL2_ttf"
 			
 			postbuildcommands
 				{
-				'{COPY} "lib/x64/SDL2_ttf.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/libfreetype-6.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"',
-				'{COPY} "lib/x64/zlib1.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2_ttf.dll" "%{wks.location}/bin/Release-x86_64-windows/"',
+				'{COPY} "lib/x64/libfreetype-6.dll" "%{wks.location}/bin/Release-x86_64-windows/"',
+				'{COPY} "lib/x64/zlib1.dll" "%{wks.location}/bin/Release-x86_64-windows/"'
 				}

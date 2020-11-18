@@ -4,8 +4,8 @@ project "SDL2"
 	cppdialect "C++17"
 	staticruntime "on"
 	
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/" .. outputdir)
+	objdir ("bin-int/" .. outputdir)
 	
 	files
 		{
@@ -28,7 +28,7 @@ project "SDL2"
 			postbuildcommands
 				{
 				'{COPY} "lib/x64" "%{cfg.targetdir}/"',
-				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Debug-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Debug-x86_64-windows/"'
 				}
 					
 		filter "configurations:Release"
@@ -38,7 +38,7 @@ project "SDL2"
 			postbuildcommands
 				{
 				'{COPY} "lib/x64" "%{cfg.targetdir}/"',
-				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Release-x86_64-windows/GameOfLife/"'
+				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Release-x86_64-windows/"'
 				}
 				
 	filter "system:linux"
