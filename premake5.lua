@@ -23,7 +23,7 @@ workspace "GameOfLife"
 	
 	project "GameOfLife"
 		location "GameOfLife"
-		kind "ConsoleApp"
+		kind "WindowedApp"
 		language "C++"
 		cppdialect "C++17"
 		staticruntime "on"
