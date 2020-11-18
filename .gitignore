@@ -3,7 +3,6 @@
 bin-int/
 
 # production files
-GameOfLife/assets/fonts/
 GameOfLife/assets/textures/**.psd
 
 # setup files

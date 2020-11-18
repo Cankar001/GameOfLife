@@ -7,9 +7,8 @@ To be able to play the game just move your copy of the arial font into GameOfLif
 
 If you would like to use another font, just change the font name in the code to your font.
 
-# Setup
+# Getting started
 
-To be able to run the game you have to change all paths to your own path, all paths are directing to the assets directory.
-After fixing all paths (located in Main.cpp and Text.h) you can build and run the project.
+To compile the program in windows, just run the CreateSolutions.bat file. It is automatically going to build the Visual Studio 2019 project files.
+After generating the solution files you can open the GameOfLife Solution and build and execute the Release build. Note that only x64 builds are supported.
 
-Have fun :)
