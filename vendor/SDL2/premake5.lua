@@ -18,6 +18,11 @@ project "SDL2"
 		"include"
 		}
 		
+	postbuildcommands
+		{
+		'{COPY} "lib/x64" "%{cfg.targetdir}/"'
+		}
+		
 	filter "system:windows"
 		systemversion "latest"
 
@@ -27,7 +32,6 @@ project "SDL2"
 			
 			postbuildcommands
 				{
-				'{COPY} "lib/x64" "%{cfg.targetdir}/"',
 				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Debug-x86_64-windows/"'
 				}
 					
@@ -37,7 +41,6 @@ project "SDL2"
 			
 			postbuildcommands
 				{
-				'{COPY} "lib/x64" "%{cfg.targetdir}/"',
 				'{COPY} "lib/x64/SDL2.dll" "%{wks.location}/bin/Release-x86_64-windows/"'
 				}
 				
