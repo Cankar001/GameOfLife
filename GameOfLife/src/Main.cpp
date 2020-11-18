@@ -239,7 +239,7 @@ int main(int argc, char *argv[])
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	
-	SDL_Surface *windowIcon = IMG_Load("K:/Programme/GameOfLife/GameOfLife/assets/textures/icon.png");
+	SDL_Surface *windowIcon = IMG_Load("assets/textures/icon.png");
 	SDL_SetWindowIcon(window, windowIcon);
 	
 	init();
@@ -286,13 +286,13 @@ int main(int argc, char *argv[])
 	SDL_Texture *resetGame = create_text(renderer, resetGameData, &resetGameWidth, &resetGameHeight);
 
 	// Create Textures
-	SDL_Texture *arrowUpKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-up.png");
-	SDL_Texture *arrowDownKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/arrow-down.png");
-	SDL_Texture *spaceKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/space.png");
-	SDL_Texture *escapeKeyTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/escape.png");
-	SDL_Texture *mouseTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/mouse.png");
-	SDL_Texture *oTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/o.png");
-	SDL_Texture *rTexture = create_texture(renderer, "K:/Programme/GameOfLife/GameOfLife/assets/textures/r.png");
+	SDL_Texture *arrowUpKeyTexture = create_texture(renderer, "assets/textures/arrow-up.png");
+	SDL_Texture *arrowDownKeyTexture = create_texture(renderer, "assets/textures/arrow-down.png");
+	SDL_Texture *spaceKeyTexture = create_texture(renderer, "assets/textures/space.png");
+	SDL_Texture *escapeKeyTexture = create_texture(renderer, "assets/textures/escape.png");
+	SDL_Texture *mouseTexture = create_texture(renderer, "assets/textures/mouse.png");
+	SDL_Texture *oTexture = create_texture(renderer, "assets/textures/o.png");
+	SDL_Texture *rTexture = create_texture(renderer, "assets/textures/r.png");
 
 	// Main Game loop
 	while (running)

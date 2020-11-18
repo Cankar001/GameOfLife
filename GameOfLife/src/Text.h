@@ -7,7 +7,7 @@
 struct TextData
 	{
 	std::string Text;
-	std::string FontPath = "K:/Programme/GameOfLife/GameOfLife/assets/fonts/arial.ttf";
+	std::string FontPath = "assets/fonts/arial.ttf";
 	int FontSize = 24;
 	Uint8 Red = 0;
 	Uint8 Green = 0;
